@@ -23,7 +23,11 @@
   https://yearn.finance/
 
   https://1inch.exchange/
+  
+* 智能合约部署
 
-* Connect Binance Smart Chain(BSC) with MetaMask
-
-  https://docs.binance.org/smart-chain/wallet/metamask.html
+  https://docs.binance.org/smart-chain/developer/rpc.html
+  
+  https://testnet.binance.org/faucet-smart
+  
+  https://docs.binance.org/smart-chain/wallet/metamask.html（用MetaMask钱包连接Binance Smart Chain(BSC)）
