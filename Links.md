@@ -9,14 +9,21 @@
   https://solidity-cn.readthedocs.io/zh/develop/solidity-in-depth.html
 
   https://cryptozombies.io/
+  
+  https://yos.io/2019/11/10/smart-contract-development-best-practices/
 
-* 交易所
+* 币安
+
+  https://bscscan.com/
 
   https://bscscan.com/address/0xe9e7cea3dedca5984780bafc599bd69add087d56
 
-* 现有聚合器
+* 现有聚合器(即我们要做的)
 
   https://yearn.finance/
 
   https://1inch.exchange/
 
+* Connect Binance Smart Chain(BSC) with MetaMask
+
+  https://docs.binance.org/smart-chain/wallet/metamask.html
