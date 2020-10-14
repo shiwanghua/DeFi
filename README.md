@@ -1,7 +1,7 @@
 # DeFi
 This is a project of finance service computation. 
 
-#Environment
+# Environment
 * MetaMask: Crypto wallet
 * Remix: IDE for Solidity
 * Ganache: Ethereum blockchain simulator
