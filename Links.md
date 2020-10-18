@@ -14,11 +14,11 @@
 
 - 币安
 
-  https://bscscan.com/
+  * 主页：https://bscscan.com/
 
-  https://bscscan.com/address/0xe9e7cea3dedca5984780bafc599bd69add087d56
+  * 已验证过的合约：https://bscscan.com/contractsVerified
 
-  https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c （Contract Application Binary Interface (ABI)）
+  * Contract Application Binary Interface (ABI)一个Token例子：https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c 
 
 - 现有聚合器(即我们要做的)
 
@@ -37,3 +37,13 @@
 - Web3
 
   https://web3js.readthedocs.io/en/v1.3.0/
+  
+- 钱包
+
+  * 安装：https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn
+* 文档：https://docs.metamask.io/guide/
+  
+- 其他陌生网站：
+
+  * 可以换钱：https://switchere.com/order/new
+  * 1inch官方聊天：https://discord.com/
