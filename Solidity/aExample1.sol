@@ -191,6 +191,7 @@ library SafeMath {
    * Requirements:
    * - Multiplication cannot overflow.
    */
+   //   pure:不能对storage变量进行
   function mul(uint256 a, uint256 b) internal pure returns (uint256) {
     // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
     // benefit is lost if 'b' is also tested.
