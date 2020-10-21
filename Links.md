@@ -43,7 +43,7 @@
   * 安装：https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn
 * 文档：https://docs.metamask.io/guide/
   
-- 其他陌生网站：
+- 其他网站：
 
   * 可以换钱：https://switchere.com/order/new
   * 1inch官方聊天：https://discord.com/
