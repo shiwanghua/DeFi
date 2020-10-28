@@ -1,23 +1,27 @@
-***Contract Source Code Explanation***
+# Contract Source Code Explanation
 
-***interface: IBEP20***
+## interface: IBEP20
+
+* 声明了一些函数
 * totalSupply
 * decimals
 * symbol
+* ......
 
-
-***library: SafeMath(可以直接拿来用)***
+## library: SafeMath 
 * add
 * sub
 * mul
 * div
 * mod
 
-***contract: Context***
+## contract: Context
+
 * _msgSender
 * _msgData
 
-***contract: Ownable is Context***
+## contract: Ownable is Context
+
 * 通过地址的形式来处理合约所有权的问题
 * 合约所有者的地址为“_owner”，数据类型是“address private”
 * 构造函数：先调用Context的_msgSender函数得到调用合约的用户地址，初始化合约内部的所有者地址_owner，触发一个事件“OwnershipTransferred”通知前端合约所有者地址已经转移成功
@@ -25,6 +29,16 @@
 * renounceOwnership：当前用户放弃自己对合约的所有权，并触发所有权转移事件，新地址为0，表示该合约目前没有所有者了
 * _transferOwnership：转移合约的所有权，新所有者地址不能为0，触发所有权转移事件
 
+## contract: BEP20Token is Context, IBEP20, Ownable
 
-***contract: BEP20Token is Context, IBEP20, Ownable***
-* 实现BEP20Token接口里的函数
+* 实现 IBEP20 接口里的函数
+
+* transfer 转移资产
+
+* approve通过某个补助(Allowance)设置事件
+
+* Allowance加减功能
+
+* mint增加货币总供应，_burnFrom减少货币总供应，并且会减少allowance
+
+

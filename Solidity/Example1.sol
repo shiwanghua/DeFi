@@ -441,6 +441,27 @@ contract BEP20Token is Context, IBEP20, Ownable {
   }
 
   /**
+   * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
+   *
+   * This is internal function is equivalent to `approve`, and can be used to
+   * e.g. set automatic allowances for certain subsystems, etc.
+   *
+   * Emits an {Approval} event.
+   *
+   * Requirements:
+   *
+   * - `owner` cannot be the zero address.
+   * - `spender` cannot be the zero address.
+   */
+  function _approve(address owner, address spender, uint256 amount) internal {
+    require(owner != address(0), "BEP20: approve from the zero address");
+    require(spender != address(0), "BEP20: approve to the zero address");
+
+    _allowances[owner][spender] = amount;
+    emit Approval(owner, spender, amount);
+  }
+
+  /**
    * @dev See {BEP20-transferFrom}.
    *
    * Emits an {Approval} event indicating the updated allowance. This is not
@@ -457,6 +478,30 @@ contract BEP20Token is Context, IBEP20, Ownable {
     _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
     return true;
   }
+
+    /**
+   * @dev Moves tokens `amount` from `sender` to `recipient`.
+   *
+   * This is internal function is equivalent to {transfer}, and can be used to
+   * e.g. implement automatic token fees, slashing mechanisms, etc.
+   *
+   * Emits a {Transfer} event.
+   *
+   * Requirements:
+   *
+   * - `sender` cannot be the zero address.
+   * - `recipient` cannot be the zero address.
+   * - `sender` must have a balance of at least `amount`.
+   */
+  function _transfer(address sender, address recipient, uint256 amount) internal {
+    require(sender != address(0), "BEP20: transfer from the zero address");
+    require(recipient != address(0), "BEP20: transfer to the zero address");
+
+    _balances[sender] = _balances[sender].sub(amount, "BEP20: transfer amount exceeds balance");
+    _balances[recipient] = _balances[recipient].add(amount);
+    emit Transfer(sender, recipient, amount);
+  }
+  
 
   /**
    * @dev Atomically increases the allowance granted to `spender` by the caller.
@@ -507,28 +552,7 @@ contract BEP20Token is Context, IBEP20, Ownable {
     return true;
   }
 
-  /**
-   * @dev Moves tokens `amount` from `sender` to `recipient`.
-   *
-   * This is internal function is equivalent to {transfer}, and can be used to
-   * e.g. implement automatic token fees, slashing mechanisms, etc.
-   *
-   * Emits a {Transfer} event.
-   *
-   * Requirements:
-   *
-   * - `sender` cannot be the zero address.
-   * - `recipient` cannot be the zero address.
-   * - `sender` must have a balance of at least `amount`.
-   */
-  function _transfer(address sender, address recipient, uint256 amount) internal {
-    require(sender != address(0), "BEP20: transfer from the zero address");
-    require(recipient != address(0), "BEP20: transfer to the zero address");
 
-    _balances[sender] = _balances[sender].sub(amount, "BEP20: transfer amount exceeds balance");
-    _balances[recipient] = _balances[recipient].add(amount);
-    emit Transfer(sender, recipient, amount);
-  }
 
   /** @dev Creates `amount` tokens and assigns them to `account`, increasing
    * the total supply.
@@ -566,26 +590,7 @@ contract BEP20Token is Context, IBEP20, Ownable {
     emit Transfer(account, address(0), amount);
   }
 
-  /**
-   * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
-   *
-   * This is internal function is equivalent to `approve`, and can be used to
-   * e.g. set automatic allowances for certain subsystems, etc.
-   *
-   * Emits an {Approval} event.
-   *
-   * Requirements:
-   *
-   * - `owner` cannot be the zero address.
-   * - `spender` cannot be the zero address.
-   */
-  function _approve(address owner, address spender, uint256 amount) internal {
-    require(owner != address(0), "BEP20: approve from the zero address");
-    require(spender != address(0), "BEP20: approve to the zero address");
 
-    _allowances[owner][spender] = amount;
-    emit Approval(owner, spender, amount);
-  }
 
   /**
    * @dev Destroys `amount` tokens from `account`.`amount` is then deducted

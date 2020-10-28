@@ -47,3 +47,7 @@
 
   * 可以换钱：https://switchere.com/order/new
   * 1inch官方聊天：https://discord.com/
+- 以太坊：
+  * https://ethereum.org/zh/java/
+  * https://ethereum.org/zh/developers/#smart-contract-languages
+  * https://ethereum.org/zh/build/
