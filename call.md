@@ -12,6 +12,7 @@
       * amounts[0]是初始货币amountIn，币种是path中第一个和第二个数值中较小的那个token
       * 设i>=1, $a_i$表示第 i-1个货币和第 i 个货币中地址较小的那个货币，$b_i$表示第i-1个货币和第i个货币中地址较大的那个货币
       * amount[i] 表示用 amount[i-1] 个 $a_i$ 货币可以换 $b_i$ 货币的个数，每次要交换的货币个数都不相同
+    * 注：如果path本来就有序时，amount[i]就表示 amount[i-1] 个第 i-1 个货币可以换第 i个货币的个数
   * call(内部先后会调用的函数):
     * getReserves(Library): 对path数组中每相邻两个token组成的pair(没有实际组成pair对象)都调用一次Library中的getReserves函数
     * getAmountOut: 将getReserves输出作为getAmountOut的输入，即每相邻两个token做一次询价
