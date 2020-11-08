@@ -1,4 +1,4 @@
-# Contract Source Code Explanation
+# BEP20Token Contract Source Code Explanation
 
 ## interface: IBEP20
 
