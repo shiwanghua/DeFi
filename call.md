@@ -60,3 +60,21 @@
 * swap: 进行交易
   * function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external;
 
+
+
+### burgerswap-core
+
+* demaxPlatform合约地址：
+  * Main Chain: 0x07c484abd8f885252C80510aAa1d4807733CFD17
+  * BSC Chain: 0x9FdC672a33f34675253041671abd214F2387b7aB
+
+* getAmountsOut(uint256 amountIn, address[] memory path) public view returns (uint256[] memory amounts)
+  * burgerswap-core/contracts/demaxPlatform.sol
+  * 调用_getSwapFeePercent()获得percent
+  * 调用_getAmountsOut()获得询价结果
+* _getSwapFeePercent() internal view returns (uint256)
+  * 返回 IDemaxConfig(CONFIG).getConfigValue(ConfigNames.SWAP_FEE_PERCENT)
+* _getAmountsOut(uint256 amount, address[] memory path,uint256 percent) internal view returns (uint256[] memory amountOuts)
+  * amountOuts[0]为输入的欲交换货币个数amount
+  * 返回的amountOuts计算结果和uniswap的一样，但计算步骤不一样
+
