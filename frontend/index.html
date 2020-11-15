@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNB Split!</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/index.js"></script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/Chart.js/2.9.4/Chart.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue-chartjs/3.5.1/vue-chartjs.js"></script>
+</head>
+<body>
+  <div id="app">
+    <el-container>
+      <el-header>
+        <h1>BNB Split!</h1>
+      </el-header>
+      <el-container>
+        <el-aside width="60%">
+          <el-row>
+            <el-col :span="22" :offset="1">
+              <el-table :data="tableData" style="width: 100%">
+                <el-table-column prop="name" label="Name"></el-table-column>
+                <el-table-column prop="amount" label="Amount"></el-table-column>
+                <el-table-column prop="txGas" label="TxGas"></el-table-column>
+                <el-table-column prop="diff" label="Diff"></el-table-column>
+                <el-table-column label="Switch">
+                  <template slot-scope="scope">
+                    <el-switch v-model="scope.row.selected" @input="dexSwitched(scope.row)"></el-switch>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+        </el-aside>
+        <el-main>
+          <el-card class="box-card">
+            <el-row>
+              <line-chart :chart-data="chartdata"></line-chart>
+            </el-row>
+            <el-row style="margin-top: 10px;">
+              <el-col :span="22" :offset="1">
+                <el-form label-position="top">
+                  <el-form-item label="Pay">
+                    <el-row :gutter="10">
+                      <el-col :span="16">
+                        <el-input-number v-model="formData.pay" @change="payChanged" :controls="false"></el-input>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-select v-model="formData.toCoin">
+                          <el-option v-for="item in coinList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                  <el-form-item label="Receive">
+                    <el-row :gutter="10">
+                      <el-col :span="16">
+                        <el-input v-model="formData.receive" :readonly="true" class="readonly-number-input"></el-input>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-select v-model="formData.fromCoin">
+                          <el-option v-for="item in coinList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="connectWallet">Connect to Wallet</el-button>
+                  </el-form-item>
+                </el-form>
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-main>
+      </el-container>
+      <el-footer>BNB Split! 2020</el-footer>
+    </el-container>
+  </div>
+  <script>
+    Vue.component('line-chart', {
+      extends: VueChartJs.Line,
+      mixins: [ VueChartJs.mixins.reactiveProp ],
+      props: ['options'],
+      mounted: function () {
+        this.renderChart(this.chartData, this.options)
+      }
+    })
+    var app = new Vue({
+      el: '#app',
+      data: {
+        formData: {
+          pay: '',
+          receive: '',
+          fromCoin: '',
+          toCoin: ''
+        },
+        coinList: [
+          { label: "BNB", value: 1 },
+          { label: "DAI", value: 2 }
+        ],
+        tableData: [
+          {
+            name: 'pancakeswap',
+            amount: 2.333,
+            txGas: 0.2333,
+            diff: 1.0,
+            selected: true
+          }
+        ],
+        chartdata: {
+          labels: [10, 20],
+          datasets: [
+            {
+              label: 'Data One',
+              data: [1, 2]
+            },
+            {
+              label: 'Data Two',
+              data: [3, 4]
+            }
+          ]
+        }
+      },
+      methods: {
+        dexSwitched: function (row) {
+          console.log(row)
+        },
+        payChanged: function () {
+          this.formData.receive = this.formData.pay * 2;
+        },
+        connectWallet: function () {
+          console.log('to wallet!')
+        }
+      }
+    })
+  </script>
+  <style>
+    .el-header {
+      margin-bottom: 20px;
+    }
+    .el-footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .el-input-number {
+      width: 100%;
+    }
+    .readonly-number-input > input {
+      text-align: center;
+    }
+  </style>
+</body>
+</html>
