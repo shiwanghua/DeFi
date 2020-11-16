@@ -137,8 +137,12 @@
         connectWallet: function () {
           console.log('to wallet!')
           if (window.ethereum) {
-            this.web3 = new Web3(window.ethereum)
-            window.ethereum.request({ method: 'eth_requestAccounts' })
+            w3 = new Web3(window.ethereum)
+            window.ethereum
+              .request({ method: 'eth_requestAccounts' })
+              .then(() => { this.web3 = w3 })
+          } else {
+            alert('Wallet is not available!')
           }
         }
       }
