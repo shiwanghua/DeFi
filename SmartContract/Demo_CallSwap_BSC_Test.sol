@@ -13,12 +13,13 @@ interface PancakeSwapInterface {
 
 interface bakerySwapInterface {
     function getAmountsOut(uint256 amountIn, address[] calldata path) external returns (uint256[] memory amounts);
-    function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts);
 }
 
 interface bscSwapInterface {
-  function getAmountsOut(uint256 amountIn, address[] calldata path) external returns (uint256[] memory amounts);
-  // function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts);
+    function getAmountsOut(uint256 amountIn, address[] calldata path) external returns (uint256[] memory amounts);
+    // function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts);
+    function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts);
+    function swapExactBNBForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts);
 }
 
 // pancakeswap: 0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F
@@ -42,7 +43,13 @@ contract Demo_Call_MoniSwap {
     //     return helloDeployed.get_z();
     // }
 
-    function test_getAmountsOut(uint amountIn, address[] memory path)public returns(uint[] memory amounts ){
+    //     function test_if(uint swapi)public returns (uint a){
+    //     if(swapi==1) return swapi*10;
+    //     else if (swapi==2) return swapi*100;
+    //     else return swapi*1000;
+    // }
+
+    function test_getAmountsOut(uint amountIn, address[] memory path) public returns(uint[] memory amounts ){
         amounts=new uint[](5);
         amounts[0]=amountIn;
         amounts[1]=moniSwapDeployed.getAmountsOut(amountIn,path)[1];
@@ -53,8 +60,12 @@ contract Demo_Call_MoniSwap {
         amounts[4]=bscSwapDeployed.getAmountsOut(amountIn,path)[1];
     }
 
-// 0x87c7c0027F5730b2B49ABae0c4F71099E203b5A9
-    function test_bscSwap(uint amountIn, uint amountOutMin, address[]  memory path, address to, uint deadline)public  returns (uint[] memory amounts_return){
-        amounts_return=bscSwapDeployed.swapExactTokensForTokens(amountIn,amountOutMin,path,to,deadline);
+
+    function test_bscSwap(uint amountIn, uint amountOutMin, address[] memory path, address to, uint deadline) public payable returns (uint[] memory amounts_return){
+        amounts_return = new uint[](path.length);
+        // amounts_return = bscSwapDeployed.swapExactTokensForTokens(amountIn,amountOutMin,path,to,deadline);
+        amounts_return = bscSwapDeployed.swapExactBNBForTokens(amountOutMin,path,to,deadline);
     }
+
+
 }

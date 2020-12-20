@@ -68,6 +68,8 @@
 #### BSC测试网Token地址
 * BSWAP 0x77d57b72d547035b51d1b722796bf23cd46b5186
 * WBNB 0xae13d989dac2f0debff460ac112a837c89baa7cd
+* BUSD 0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee
+*  
 #### 交易所支持的Token（与区块链种类有关）
 
 * BurgerSwap
