@@ -1,86 +1,29 @@
 (async () => {
         try {
-           const abi_Demo_Call_MoniSwap = [
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amountIn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amountOutMin",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address[]",
-				"name": "path",
-				"type": "address[]"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "deadline",
-				"type": "uint256"
-			}
-		],
-		"name": "test_bscSwap",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "amounts_return",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amountIn",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address[]",
-				"name": "path",
-				"type": "address[]"
-			}
-		],
-		"name": "test_getAmountsOut",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "amounts",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-]
-// ['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c','0x55d398326f99059fF775485246999027B3197955'] // 5
-// ['0x77d57b72d547035b51d1b722796bf23cd46b5186','0xae13d989dac2f0debff460ac112a837c89baa7cd']
-
-            const contractAddress =  '0xa85650Fa1EB8756793D04660D0c2487cbBcb5025'
+           const abi_Demo_Call_MoniSwap =[{"inputs":[{"internalType":"contract BinanceSplit","name":"impl","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newImpl","type":"address"}],"name":"ImplementationUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"contract IBEP20","name":"fromToken","type":"address"},{"indexed":true,"internalType":"contract IBEP20","name":"destToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"fromTokenAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"destTokenAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"minReturn","type":"uint256"},{"indexed":false,"internalType":"uint256[]","name":"distribution","type":"uint256[]"},{"indexed":false,"internalType":"uint256","name":"flag","type":"uint256"}],"name":"Swapped","type":"event"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"constant":true,"inputs":[],"name":"BinanceSplitImpl","outputs":[{"internalType":"contract BinanceSplit","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"contract IBEP20","name":"fromToken","type":"address"},{"internalType":"contract IBEP20","name":"destToken","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"parts","type":"uint256"},{"internalType":"uint256","name":"flags","type":"uint256"}],"name":"getExpectedReturn","outputs":[{"internalType":"uint256","name":"returnAmount","type":"uint256"},{"internalType":"uint256[]","name":"distribution","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"contract IBEP20","name":"fromToken","type":"address"},{"internalType":"contract IBEP20","name":"destToken","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"parts","type":"uint256"},{"internalType":"uint256","name":"flags","type":"uint256"},{"internalType":"uint256","name":"destTokenEthPriceTimesGasPrice","type":"uint256"}],"name":"getExpectedReturnWithGas","outputs":[{"internalType":"uint256","name":"returnAmount","type":"uint256"},{"internalType":"uint256","name":"estimateGasAmount","type":"uint256"},{"internalType":"uint256[]","name":"distribution","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"contract BinanceSplit","name":"impl","type":"address"}],"name":"setNewImpl","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"contract IBEP20","name":"fromToken","type":"address"},{"internalType":"contract IBEP20","name":"destToken","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"minReturn","type":"uint256"},{"internalType":"uint256[]","name":"distribution","type":"uint256[]"},{"internalType":"uint256","name":"flags","type":"uint256"}],"name":"swap","outputs":[{"internalType":"uint256","name":"returnAmount","type":"uint256"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]
+          // ['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c','0x55d398326f99059fF775485246999027B3197955'] // 5
+// ['0x77D57b72D547035B51D1B722796bF23cD46B5186','0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd']
+// ['0xd66c6B4F0be8CE5b39D52E0Fd1344c389929B378','0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd']
+            const contractAddress =  '0xEB8062D0DA6A9ADf9c2eb641aB120241D5b70c9d' 
             // let contract = new web3.eth.Contract(hello_abi, contractAddress)
             let contract = new web3.eth.Contract(abi_Demo_Call_MoniSwap,contractAddress)
-            //let name = await contract.methods.test_getAmountsOut(500,['0x77d57b72d547035b51d1b722796bf23cd46b5186','0xae13d989dac2f0debff460ac112a837c89baa7cd']).call()
-            // let name =  await contract.methods.query_prices(500,['0x77d57b72d547035b51d1b722796bf23cd46b5186','0xae13d989dac2f0debff460ac112a837c89baa7cd']).call()
-            // let name = await contract.methods.test_set_z(100).send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5'})
-            //console.log(name)
-
-            let swap = await contract.methods.test_bscSwap(12,3,['0xae13d989dac2f0debff460ac112a837c89baa7cd','0x77d57b72d547035b51d1b722796bf23cd46b5186'],'0x87c7c0027F5730b2B49ABae0c4F71099E203b5A9',1000000000000).send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5'})
-            console.log(swap)
+          
+        const abi_token =[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"guy","type":"address"},{"name":"wad","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"src","type":"address"},{"name":"dst","type":"address"},{"name":"wad","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"wad","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"dst","type":"address"},{"name":"wad","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"src","type":"address"},{"indexed":true,"name":"guy","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"src","type":"address"},{"indexed":true,"name":"dst","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"dst","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"src","type":"address"},{"indexed":false,"name":"wad","type":"uint256"}],"name":"Withdrawal","type":"event"}]
+        const tokenAddr = "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd"
+        let tokenContract = new web3.eth.Contract(abi_token,tokenAddr);
+        let token_approve = await tokenContract.methods.approve('0xEB8062D0DA6A9ADf9c2eb641aB120241D5b70c9d','1000000060000000000').send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5', gas: 10000000});
+        console.log(token_approve)
+       // let token_transfer = await tokenContract.methods.transfer('0xEB8062D0DA6A9ADf9c2eb641aB120241D5b70c9d','1000000060000000000').send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5', gas: 10000000});
+        //console.log(token_transfer)
+        
+            //let swap = await contract.methods.test_bscSwap(200000000,0,['0xd66c6B4F0be8CE5b39D52E0Fd1344c389929B378','0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd'],'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5',1000000000000).send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5'})
+            //let swap = await contract.methods.test_swapExactBNBForTokens(0,['0xae13d989dac2f0debff460ac112a837c89baa7cd','0x77d57b72d547035b51d1b722796bf23cd46b5186'],'0x7B35dAc0D970462D13474b51c03a58B79E303d12',10000000000).send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5',value: 10000000000000000000})
+            let test_swap = await contract.methods.swap('0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd','0xd66c6B4F0be8CE5b39D52E0Fd1344c389929B378',1000,0,[0,0,0,0,0,0,0,10,0,0,0,0],0).send({from:'0x344F14b0Ea7a1CFfd17D7887E007D482BB4320a5',value: 1000000000000000000,gas:10000000})
+            console.log(test_swap)
 
         } catch (e) {
             console.log(e.message)
         }
 
 })()
+
