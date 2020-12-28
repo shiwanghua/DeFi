@@ -244,7 +244,7 @@
 
                     if (val.part > 10) {
                         var div = val.part / 10;
-                        for (var i = 1; i <= 10; i++) divArray.push(Math.ceil(i * div) - 1);
+                        for (var i = 0; i < 10; i++) divArray.push(Math.ceil(i * div));
                     } else
                         for (var i = 0; i < val.part; i++) divArray.push(i);
 
@@ -315,7 +315,7 @@
             swapT: function() {
                 var val = this.formData;
                 var amountInTemp = new BigNumber(val.pay).shiftedBy(18);
-                var minReturn = amountInTemp.minus(new BigNumber(this.sliptolfloat).times(amountInTemp)).toString();
+                var minReturn = amountInTemp.minus(new BigNumber(this.sliptolfloat).times(amountInTemp)).toFixed();
                 var amountIn = amountInTemp.toFixed();
                 console.log(amountIn);
                 console.log(minReturn);
@@ -332,7 +332,7 @@
 
 
 
-                    Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 0, this.distribution, this.flag).send({
+                    Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), minReturn.toString(), this.distribution, this.flag).send({
                         from: ethereum.selectedAddress
                     }).then(
                         res => {
