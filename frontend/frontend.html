@@ -136,53 +136,55 @@
                     fromCoin: 'WBNB',
                     toCoin: 'DAI'
                 },
-                coinList: [{
-                    label: "WBNB",
-                    value: "WBNB"
-                }, {
-                    label: "CAKE",
-                    value: "CAKE"
-                }, {
-                    label: "DAI",
-                    value: "DAI"
-                }, {
-                    label: "BUGER",
-                    value: "BUGER"
-                }, {
-                    label: "ETH",
-                    value: "ETH"
-                }],
-                tableData: [{
-                    name: 'burgerSwap',
-                    amount: "No available",
-
-
-                    selected: true
-                }, {
-                    name: 'bakerySwap',
-                    amount: "No available",
-
-
-                    selected: true
-                }, {
-                    name: 'bscSwap',
-                    amount: "No available",
-
-
-                    selected: true
-                }, {
-                    name: 'cheeseSwap',
-                    amount: "No available",
-
-
-                    selected: true
-                }, {
-                    name: 'pancakeswap',
-                    amount: "No available",
-
-
-                    selected: true
-                }],
+                coinList: [
+                    {
+                        label: "WBNB",
+                        value: "WBNB"
+                    },
+                    {
+                        label: "CAKE",
+                        value: "CAKE"
+                    },
+                    {
+                        label: "DAI",
+                        value: "DAI"
+                    },
+                    {
+                        label: "BUGER",
+                        value: "BUGER"
+                    },
+                    {
+                        label: "ETH",
+                        value: "ETH"
+                    }
+                ],
+                tableData: [
+                    {
+                        name: 'burgerSwap',
+                        amount: "No available",
+                        selected: true
+                    },
+                    {
+                        name: 'bakerySwap',
+                        amount: "No available",
+                        selected: true
+                    },
+                    {
+                        name: 'bscSwap',
+                        amount: "No available",
+                        selected: true
+                    },
+                    {
+                        name: 'cheeseSwap',
+                        amount: "No available",
+                        selected: true
+                    },
+                    {
+                        name: 'pancakeswap',
+                        amount: "No available",
+                        selected: true
+                    }
+                ],
                 chartdata: {}
             },
             computed: {
@@ -283,14 +285,16 @@
                                 {
                                     label: 'bakerySwap',
                                     data: bakeryArray
-                                }, {
+                                },
+                                {
                                     label: 'bscSwap',
                                     data: bscArray
-                                }
-                                , {
+                                },
+                                {
                                     label: 'cheeseSwap',
                                     data: cheeseArray
-                                }, {
+                                },
+                                {
                                     label: 'pancakeswap',
                                     data: pancakeArray
                                 }

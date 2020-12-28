@@ -136,60 +136,70 @@
                     fromCoin: 'BUSD',
                     toCoin: 'WBNB'
                 },
-                coinList1: [{
-                    label: "WBNB",
-                    value: "WBNB"
-                }, {
-                    label: "BUSD",
-                    value: "BUSD"
-                }, ],
-                coinList2: [{
-                    label: "WBNB",
-                    value: "WBNB"
-                }, {
-                    label: "BSWAP",
-                    value: "BSWAP"
-                }, {
-                    label: "BUSD",
-                    value: "BUSD"
-                }, {
-                    label: "BTCB",
-                    value: "BTCB"
-                }, {
-                    label: "ETH",
-                    value: "ETH"
-                }],
-                tableData: [{
-                    name: 'burgerSwap',
-                    amount: "No available",
-
-                    diff: 1.0,
-                    selected: false
-                }, {
-                    name: 'bakerySwap',
-                    amount: "No available",
-
-                    diff: 1.0,
-                    selected: true
-                }, {
-                    name: 'bscSwap',
-                    amount: "No available",
-
-                    diff: 1.0,
-                    selected: true
-                }, {
-                    name: 'cheeseSwap',
-                    amount: "No available",
-
-                    diff: 1.0,
-                    selected: false
-                }, {
-                    name: 'pancakeswap',
-                    amount: "No available",
-
-                    diff: 1.0,
-                    selected: false
-                }],
+                coinList1: [
+                    {
+                        label: "WBNB",
+                        value: "WBNB"
+                    },
+                    {
+                        label: "BUSD",
+                        value: "BUSD"
+                    }
+                ],
+                coinList2: [
+                    {
+                        label: "WBNB",
+                        value: "WBNB"
+                    },
+                    {
+                        label: "BSWAP",
+                        value: "BSWAP"
+                    },
+                    {
+                        label: "BUSD",
+                        value: "BUSD"
+                    },
+                    {
+                        label: "BTCB",
+                        value: "BTCB"
+                    },
+                    {
+                        label: "ETH",
+                        value: "ETH"
+                    }
+                ],
+                tableData: [
+                    {
+                        name: 'burgerSwap',
+                        amount: "No available",
+                        diff: 1.0,
+                        selected: false
+                    },
+                    {
+                        name: 'bakerySwap',
+                        amount: "No available",
+                        diff: 1.0,
+                        selected: true
+                    },
+                    {
+                        name: 'bscSwap',
+                        amount: "No available",
+                        diff: 1.0,
+                        selected: true
+                    },
+                    {
+                        name: 'cheeseSwap',
+                        amount: "No available",
+                        diff: 1.0,
+                        selected: false
+                    },
+                    {
+                        name: 'pancakeswap',
+                        amount: "No available",
+                        diff: 1.0,
+                        selected: false
+                    }
+                ],
                 chartdata: {}
             },
             computed: {
@@ -204,9 +214,9 @@
                     var val = this.formData;
                     var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
                     Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-                    //<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[0].name)).call().then(res => { -->
-                    //				<!-- t[0].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
-                    //		<!-- }) -->
+                    // Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[0].name)).call().then(res => {
+                    //     t[0].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    // })
                     Contract_Query.methods.getExpectedReturn(
                             Address_Tokens.get(val.fromCoin),
                             Address_Tokens.get(val.toCoin),
@@ -225,12 +235,12 @@
                         .then(res => {
                             t[2].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
                         })
-                        //<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[3].name)).call().then(res => {		      -->
-                        //					<!-- t[3].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
-                        //		<!-- }) -->
-                        //<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[4].name)).call().then(res => { -->
-                        //					<!-- t[4].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
-                        //		<!-- }) -->
+                    // Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[3].name)).call().then(res => {
+                    //     t[3].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    // })
+                    // Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[4].name)).call().then(res => {
+                    //     t[4].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    // })
                 },
                 QueryBest: function() {
                     this.flag = disable_all;
@@ -268,9 +278,9 @@
                         } else
                             for (var i = 0; i < val.part; i++) divArray.push(i);
 
-                        // <!-- for(var i = 0;i < 10 ; i++ ){ -->
-                        //     <!-- burgerArray.push(Math.max(res[val.part+divArray[i]],res[2*val.part+divArray[i]],res[3*div.part+divArray[i]])) -->
-                        // <!-- } -->
+                        // for (var i = 0; i < 10; i++) {
+                        //     burgerArray.push(Math.max(res[val.part + divArray[i]], res[2 * val.part + divArray[i]], res[3 * div.part + divArray[i]]))
+                        // }
                         for (var i = 0; i < 10; i++) {
                             bakeryArray.push(new BigNumber(Math.max(res[val.part * 4 + divArray[i]], res[5 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
 
@@ -279,38 +289,39 @@
                             bscArray.push(new BigNumber(Math.max(res[val.part * 6 + divArray[i]], res[7 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
 
                         }
-                        // <!-- for(var i = 0;i < 10 ; i++  ){ -->
-                        //     <!-- cheeseArray.push(Math.max(res[val.part*8+divArray[i]],res[9*val.part+divArray[i]])) -->
+                        // for (var i = 0; i < 10; i++) {
+                        //     cheeseArray.push(Math.max(res[val.part * 8 + divArray[i]], res[9 * val.part + divArray[i]]))
 
-                        // <!-- } -->
-                        // <!-- for(var i = 0;i < 10 ; i++  ){ -->
-                        //     <!-- pancakeArray.push(Math.max(res[val.part*10+divArray[i]],res[11*val.part+divArray[i]])) -->
-                        // <!-- } -->
+                        // }
+                        // for (var i = 0; i < 10; i++) {
+                        //     pancakeArray.push(Math.max(res[val.part * 10 + divArray[i]], res[11 * val.part + divArray[i]]))
+                        // }
                         for (let i = 0; i < divArray.length; i++) {
                             divArray[i] = (divArray[i] + 1) / val.part * val.pay
                         }
                         this.chartdata = {
                             labels: divArray,
                             datasets: [
-                                // <!-- { -->
-                                // <!-- label: 'burgerSwap', -->
-                                // <!-- data: burgerArray -->
-                                // <!-- }, -->
+                                // {
+                                //     label: 'burgerSwap',
+                                //     data: burgerArray
+                                // }, 
                                 {
                                     label: 'bakerySwap',
                                     data: bakeryArray
-                                }, {
+                                },
+                                {
                                     label: 'bscSwap',
                                     data: bscArray
-                                }
-                                // <!-- { -->
-                                // <!-- label: 'cheeseSwap', -->
-                                // <!-- data: cheeseArray -->
-                                // <!-- }, -->
-                                // <!-- { -->
-                                // <!-- label: 'pancakeswap', -->
-                                // <!-- data: pancakeArray -->
-                                // <!-- } -->
+                                },
+                                // {
+                                //     label: 'cheeseSwap',
+                                //     data: cheeseArray
+                                // },
+                                // {
+                                //     label: 'pancakeswap',
+                                //     data: pancakeArray
+                                // }
                             ]
                         }
                     })
