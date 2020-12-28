@@ -181,13 +181,6 @@
           }
         ],
         chartdata: {
-          labels: ['burgerSwap', 'bakerySwap','bscSwap','cheeseSwap','pancakeswap'],
-          datasets: [
-            {
-              label: 'distribution',
-              data: [2,8,0,0,0]
-            },
-          ]
         }
       },
       computed: {
@@ -238,16 +231,69 @@
           
           for(var num = 0;num<5;num++)	if(this.tableData[num].selected == true )	this.flag = this.flag - FlagMap.get(this.tableData[num].name);
           Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),val.part,this.flag).call().then(res => {
-                    this.distribution = res[1];
-                    val.receive =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-                    this.chartdata.datasets[0].data[0] = Number(this.distribution[1])+Number(this.distribution[2])+Number(this.distribution[3]);
-                    this.chartdata.datasets[0].data[1] = Number(this.distribution[4])+Number(this.distribution[5]);
-                    this.chartdata.datasets[0].data[2] = Number(this.distribution[6])+Number(this.distribution[7]);
-                    this.chartdata.datasets[0].data[3] = Number(this.distribution[8])+Number(this.distribution[9]);
-                    this.chartdata.datasets[0].data[4] = Number(this.distribution[10])+Number(this.distribution[11]);
-                    
+              this.distribution = res[1]; 
+              val.receive =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
             }
           )
+
+          Contract_Query.methods.getCurve(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),val.part,this.flag).call().then(res => {
+            var burgerArray = new Array();var bakeryArray = new Array();var bscArray = new Array();
+            var cheeseArray = new Array();var pancakeArray = new Array();
+            var divArray = new Array();
+            
+            if(val.part > 10 ) {
+              var div = val.part/10;
+              for(var i = 1; i <=	10 ; i++)	divArray.push(Math.ceil(i*div)-1);	
+            }
+            else for(var i=0; i<	val.part ; i++ )	divArray.push(i);
+        
+            // <!-- for(var i = 0;i < 10 ; i++ ){ -->
+            //     <!-- burgerArray.push(Math.max(res[val.part+divArray[i]],res[2*val.part+divArray[i]],res[3*div.part+divArray[i]])) -->
+            // <!-- } -->
+            for(var i = 0;i < 10 ; i++  ){
+              bakeryArray.push(new BigNumber(Math.max(res[val.part*4+divArray[i]],res[5*val.part+divArray[i]])).shiftedBy(-18).toFixed(2))
+                
+            }
+            for(var i = 0;i < 10 ; i++ ){
+              bscArray.push(new BigNumber(Math.max(res[val.part*6+divArray[i]],res[7*val.part+divArray[i]])).shiftedBy(-18).toFixed(2))
+                
+            }
+            // <!-- for(var i = 0;i < 10 ; i++  ){ -->
+            //     <!-- cheeseArray.push(Math.max(res[val.part*8+divArray[i]],res[9*val.part+divArray[i]])) -->
+                
+            // <!-- } -->
+            // <!-- for(var i = 0;i < 10 ; i++  ){ -->
+            //     <!-- pancakeArray.push(Math.max(res[val.part*10+divArray[i]],res[11*val.part+divArray[i]])) -->
+            // <!-- } -->
+            var length = Math.min(val.part,10);
+            for(var i=0; i<	length ; i++ )	divArray[i] = divArray[i] +1 ;
+            this.chartdata ={
+              labels:divArray,
+              datasets: [
+                // <!-- { -->
+                // <!-- label: 'burgerSwap', -->
+                // <!-- data: burgerArray -->
+                // <!-- }, -->
+                {
+                  label: 'bakerySwap',
+                  data: bakeryArray
+                },
+                {
+                  label: 'bscSwap',
+                  data: bscArray
+                }
+                // <!-- { -->
+                // <!-- label: 'cheeseSwap', -->
+                // <!-- data: cheeseArray -->
+                // <!-- }, -->
+                // <!-- { -->
+                // <!-- label: 'pancakeswap', -->
+                // <!-- data: pancakeArray -->
+                // <!-- } -->
+              ]
+            }
+          }
+        )
         },
         dexSwitched: function (row) {
           this.QueryBest();
@@ -272,7 +318,11 @@
         },
         swapT: function(){
           var val = this.formData;
-          var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+          var amountInTemp = new BigNumber(val.pay).shiftedBy(18);
+          var minReturn = amountInTemp.minus(new BigNumber(this.sliptolfloat).times(amountInTemp)).toString();
+          var amountIn = amountInTemp.toFixed();
+          console.log(amountIn);
+          console.log(minReturn);
           var TABI = window['ABI_'+val.fromCoin];
           if(val.pay == 0)	alert("Pay is 0,Please input pay number.")
           else {
