@@ -79,6 +79,12 @@
                       </el-col>
                     </el-row>
                   </el-form-item>
+                  <el-form-item label="Tolerance">
+                    <el-radio-group v-model="sliptol">
+                      <el-radio-button label="0.1%"></el-radio-button>
+                      <el-radio-button label="0.5%"></el-radio-button>
+                    </el-radio-group>
+                  </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="connectWallet" v-if="!connected">Connect to Wallet</el-button>
                     <el-button type="primary" @click="swapT" v-else>Swap</el-button>
@@ -118,6 +124,7 @@
         web3: null,
         distribution:null,	
         flag: null,
+        sliptol: '0.5%',
         formData: {
           pay: 0,
           part: 10,
@@ -181,6 +188,12 @@
               data: [2,8,0,0,0]
             },
           ]
+        }
+      },
+      computed: {
+        sliptolfloat: function () {
+          let temp = this.sliptol
+          return Number(temp.substr(0, temp.length-1)) / 100
         }
       },
       methods: {
