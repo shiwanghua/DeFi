@@ -241,6 +241,15 @@
             var cheeseArray = new Array();var pancakeArray = new Array();
             var divArray = new Array();
             
+            let res2 = []
+            for (let pos = 0; pos < res.length; pos += val.part) {
+              for (let it = 1; it <= val.part; it++) {
+                let temp = res[it + pos - 1] / (it / val.part * val.pay)
+                res2.push(temp)
+              }
+            }
+            res = res2
+            
             if(val.part > 10 ) {
               var div = val.part/10;
               for(var i = 1; i <=	10 ; i++)	divArray.push(Math.ceil(i*div)-1);	
@@ -265,8 +274,9 @@
             // <!-- for(var i = 0;i < 10 ; i++  ){ -->
             //     <!-- pancakeArray.push(Math.max(res[val.part*10+divArray[i]],res[11*val.part+divArray[i]])) -->
             // <!-- } -->
-            var length = Math.min(val.part,10);
-            for(var i=0; i<	length ; i++ )	divArray[i] = divArray[i] +1 ;
+            for (let i = 0; i < divArray.length; i++) {
+              divArray[i] = (divArray[i] + 1) / val.part * val.pay
+            }
             this.chartdata ={
               labels:divArray,
               datasets: [
