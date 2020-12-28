@@ -58,8 +58,7 @@
                                             </el-col>
                                             <el-col :span="8">
                                                 <el-select v-model="formData.fromCoin">
-                                                    <el-option v-for="item in coinList" :key="item.value" :label="item.label" :value="item.value">
-                                                    </el-option>
+                                                    <el-option v-for="item in coinList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                                 </el-select>
                                             </el-col>
                                         </el-row>
@@ -79,8 +78,7 @@
                                             </el-col>
                                             <el-col :span="8">
                                                 <el-select v-model="formData.toCoin">
-                                                    <el-option v-for="item in coinList" :key="item.value" :label="item.label" :value="item.value">
-                                                    </el-option>
+                                                    <el-option v-for="item in coinList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                                 </el-select>
                                             </el-col>
                                         </el-row>
@@ -124,228 +122,234 @@
             }
         })
         var app = new Vue({
-                    el: '#app',
-                    data: {
-                        connected: false,
-                        web3: null,
-                        distribution: null,
-                        flag: null,
-                        sliptol: '0.5%',
-                        formData: {
-                            pay: 0,
-                            part: 10,
-                            receive: '',
-                            fromCoin: 'WBNB',
-                            toCoin: 'DAI'
-                        },
-                        coinList: [{
-                            label: "WBNB",
-                            value: "WBNB"
-                        }, {
-                            label: "CAKE",
-                            value: "CAKE"
-                        }, {
-                            label: "DAI",
-                            value: "DAI"
-                        }, {
-                            label: "BUGER",
-                            value: "BUGER"
-                        }, {
-                            label: "ETH",
-                            value: "ETH"
-                        }],
-                        tableData: [{
-                            name: 'burgerSwap',
-                            amount: "No available",
+            el: '#app',
+            data: {
+                connected: false,
+                web3: null,
+                distribution: null,
+                flag: null,
+                sliptol: '0.5%',
+                formData: {
+                    pay: 0,
+                    part: 10,
+                    receive: '',
+                    fromCoin: 'WBNB',
+                    toCoin: 'DAI'
+                },
+                coinList: [{
+                    label: "WBNB",
+                    value: "WBNB"
+                }, {
+                    label: "CAKE",
+                    value: "CAKE"
+                }, {
+                    label: "DAI",
+                    value: "DAI"
+                }, {
+                    label: "BUGER",
+                    value: "BUGER"
+                }, {
+                    label: "ETH",
+                    value: "ETH"
+                }],
+                tableData: [{
+                    name: 'burgerSwap',
+                    amount: "No available",
 
 
-                            selected: true
-                        }, {
-                            name: 'bakerySwap',
-                            amount: "No available",
+                    selected: true
+                }, {
+                    name: 'bakerySwap',
+                    amount: "No available",
 
 
-                            selected: true
-                        }, {
-                            name: 'bscSwap',
-                            amount: "No available",
+                    selected: true
+                }, {
+                    name: 'bscSwap',
+                    amount: "No available",
 
 
-                            selected: true
-                        }, {
-                            name: 'cheeseSwap',
-                            amount: "No available",
+                    selected: true
+                }, {
+                    name: 'cheeseSwap',
+                    amount: "No available",
 
 
-                            selected: true
-                        }, {
-                            name: 'pancakeswap',
-                            amount: "No available",
+                    selected: true
+                }, {
+                    name: 'pancakeswap',
+                    amount: "No available",
 
 
-                            selected: true
-                        }],
-                        chartdata: {}
-                    },
-                    computed: {
-                        sliptolfloat: function() {
-                            let temp = this.sliptol
-                            return Number(temp.substr(0, temp.length - 1)) / 100
-                        }
-                    },
-                    methods: {
-                        QueryAll: function() {
-                            var t = this.tableData;
-                            var val = this.formData;
-                            var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
-                            Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-
-
-                            Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[0].name)).call().then(res => {].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-                            })
-
-                            Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[1].name)).call().then(res => {
+                    selected: true
+                }],
+                chartdata: {}
+            },
+            computed: {
+                sliptolfloat: function() {
+                    let temp = this.sliptol
+                    return Number(temp.substr(0, temp.length - 1)) / 100
+                }
+            },
+            methods: {
+                QueryAll: function() {
+                    var t = this.tableData;
+                    var val = this.formData;
+                    var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+                    Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
+                    Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[0].name)).call().then(res => {
+                        t[0].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    })
+                    Contract_Query.methods.getExpectedReturn(
+                            Address_Tokens.get(val.fromCoin),
+                            Address_Tokens.get(val.toCoin),
+                            amountIn.toString(),
+                            1,
+                            disable_all - FlagMap.get(t[1].name)).call()
+                        .then(res => {
                             t[1].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
                         })
-
-                            Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[2].name)).call().then(res => {
+                    Contract_Query.methods.getExpectedReturn(
+                            Address_Tokens.get(val.fromCoin),
+                            Address_Tokens.get(val.toCoin),
+                            amountIn.toString(),
+                            1,
+                            disable_all - FlagMap.get(t[2].name)).call()
+                        .then(res => {
                             t[2].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
                         })
+                    Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[3].name)).call().then(res => {
+                        t[3].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    })
+                    Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[4].name)).call().then(res => {
+                        t[4].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    })
+                },
+                QueryBest: function() {
+                    this.flag = disable_all;
+                    var val = this.formData;
+                    var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+                    Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
 
-                            Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[3].name)).call().then(res => {].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-                        })
-
-                    Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[4].name)).call().then(res => {].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    for (var num = 0; num < 5; num++)
+                        if (this.tableData[num].selected == true) this.flag = this.flag - FlagMap.get(this.tableData[num].name);
+                    Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), val.part, this.flag).call().then(res => {
+                        this.distribution = res[1];
+                        val.receive = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
                     })
 
-            },
-            QueryBest: function() {
-                this.flag = disable_all;
-                var val = this.formData;
-                var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
-                Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-                for (var num = 0; num < 5; num++)
-                    if (this.tableData[num].selected == true) this.flag = this.flag - FlagMap.get(this.tableData[num].name);
+                    Contract_Query.methods.getCurve(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), val.part, this.flag).call().then(res => {
+                        var burgerArray = new Array();
+                        var bakeryArray = new Array();
+                        var bscArray = new Array();
+                        var cheeseArray = new Array();
+                        var pancakeArray = new Array();
+                        var divArray = new Array();
 
+                        if (val.part > 10) {
+                            var div = val.part / 10;
+                            for (var i = 0; i < 10; i++) divArray.push(Math.ceil(i * div));
+                        } else
+                            for (var i = 0; i < val.part; i++) divArray.push(i);
 
-                Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), val.part, this.flag).call().then(res => {
-                    this.distribution = res[1];
-                    val.receive = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-                })
-
-
-                Contract_Query.methods.getCurve(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), val.part, this.flag).call().then(res => {
-                    var burgerArray = new Array();
-                    var bakeryArray = new Array();
-                    var bscArray = new Array();
-                    var cheeseArray = new Array();
-                    var pancakeArray = new Array();
-                    var divArray = new Array();
-
-                    if (val.part > 10) {
-                        var div = val.part / 10;
-                        for (var i = 0; i < 10; i++) divArray.push(Math.ceil(i * div));
-                    } else
-                        for (var i = 0; i < val.part; i++) divArray.push(i);
-
-                    for (var i = 0; i < 10; i++) {
-                        burgerArray.push(Math.max(res[val.part + divArray[i]], res[2 * val.part + divArray[i]], res[3 * div.part + divArray[i]]))
-                    }
-                    for (var i = 0; i < 10; i++) {
-                        bakeryArray.push(new BigNumber(Math.max(res[val.part * 4 + divArray[i]], res[5 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
-
-                    }
-                    for (var i = 0; i < 10; i++) {
-                        bscArray.push(new BigNumber(Math.max(res[val.part * 6 + divArray[i]], res[7 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
-
-                    }
-                    for (var i = 0; i < 10; i++) {
-                        cheeseArray.push(Math.max(res[val.part * 8 + divArray[i]], res[9 * val.part + divArray[i]]))
-
-                    }
-                    for (var i = 0; i < 10; i++) {
-                        pancakeArray.push(Math.max(res[val.part * 10 + divArray[i]], res[11 * val.part + divArray[i]]))
-                    }
-                    var length = Math.min(val.part, 10);
-                    for (var i = 0; i < length; i++) divArray[i] = divArray[i] + 1;
-                    this.chartdata = {
-                        labels: divArray,
-                        datasets: [{
-                            label: 'burgerSwap',
-                            data: burgerArray
-                        }, {
-                            label: 'bakerySwap',
-                            data: bakeryArray
-                        }, {
-                            label: 'bscSwap',
-                            data: bscArray
-                        } {
-                            label: 'cheeseSwap',
-                            data: cheeseArray
-                        }, {
-                            label: 'pancakeswap',
-                            data: pancakeArray
-                        }]
-                    }
-                })
-            },
-            dexSwitched: function(row) {
-                this.QueryBest();
-            },
-            formDataChange: function() {
-                this.QueryAll();
-                this.QueryBest();
-            },
-            connectWallet: function() {
-                console.log('to wallet!')
-                if (window.ethereum) {
-                    // this.web3 = new Web3(window.ethereum)
-                    window.ethereum
-                        .request({
-                            method: 'eth_requestAccounts'
-                        })
-                        .then(() => {
-                            this.connected = true;
-                            alert('Wallet Connect successlly')
-                        })
-                } else {
-                    alert('Wallet is not available!')
-                }
-            },
-            swapT: function() {
-                var val = this.formData;
-                var amountInTemp = new BigNumber(val.pay).shiftedBy(18);
-                var minReturn = amountInTemp.minus(new BigNumber(this.sliptolfloat).times(amountInTemp)).toFixed();
-                var amountIn = amountInTemp.toFixed();
-                console.log(amountIn);
-                console.log(minReturn);
-                var TABI = window['ABI_' + val.fromCoin];
-
-
-                if (val.pay == 0) alert("Pay is 0,Please input pay number.")
-                else {
-                    Swap_Main = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-                    Contract_Tokens = new this.web3.eth.Contract(TABI, Address_Tokens.get(val.fromCoin));
-                    Contract_Tokens.methods.approve(Address_MainContract, amountIn).send({
-                        from: ethereum.selectedAddress
-                    });
-
-
-
-                    Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), minReturn.toString(), this.distribution, this.flag).send({
-                        from: ethereum.selectedAddress
-                    }).then(
-                        res => {
-                            alert("will open a new window");
-                            window.open("https://testnet.bscscan.com/tx/" + res.transactionHash)
+                        for (var i = 0; i < 10; i++) {
+                            burgerArray.push(Math.max(res[val.part + divArray[i]], res[2 * val.part + divArray[i]], res[3 * div.part + divArray[i]]))
+                        }
+                        for (var i = 0; i < 10; i++) {
+                            bakeryArray.push(new BigNumber(Math.max(res[val.part * 4 + divArray[i]], res[5 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
 
                         }
-                    )
+                        for (var i = 0; i < 10; i++) {
+                            bscArray.push(new BigNumber(Math.max(res[val.part * 6 + divArray[i]], res[7 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
 
-                }
-            }
-        },
-        mounted: function() {
+                        }
+                        for (var i = 0; i < 10; i++) {
+                            cheeseArray.push(Math.max(res[val.part * 8 + divArray[i]], res[9 * val.part + divArray[i]]))
+
+                        }
+                        for (var i = 0; i < 10; i++) {
+                            pancakeArray.push(Math.max(res[val.part * 10 + divArray[i]], res[11 * val.part + divArray[i]]))
+                        }
+                        for (let i = 0; i < divArray.length; i++) {
+                            divArray[i] = (divArray[i] + 1) / val.part * val.pay
+                        }
+                        this.chartdata = {
+                            labels: divArray,
+                            datasets: [
+                                {
+                                    label: 'burgerSwap',
+                                    data: burgerArray
+                                }, 
+                                {
+                                    label: 'bakerySwap',
+                                    data: bakeryArray
+                                }, {
+                                    label: 'bscSwap',
+                                    data: bscArray
+                                }
+                                , {
+                                    label: 'cheeseSwap',
+                                    data: cheeseArray
+                                }, {
+                                    label: 'pancakeswap',
+                                    data: pancakeArray
+                                }
+                            ]
+                        }
+                    })
+                },
+                dexSwitched: function(row) {
+                    this.QueryBest();
+                },
+                formDataChange: function() {
+                    this.QueryAll();
+                    this.QueryBest();
+                },
+                connectWallet: function() {
+                    console.log('to wallet!')
+                    if (window.ethereum) {
+                        // this.web3 = new Web3(window.ethereum)
+                        window.ethereum
+                            .request({
+                                method: 'eth_requestAccounts'
+                            })
+                            .then(() => {
+                                this.connected = true;
+                                alert('Wallet Connect successlly')
+                            })
+                    } else {
+                        alert('Wallet is not available!')
+                    }
+                },
+                swapT: function() {
+                    var val = this.formData;
+                    var amountInTemp = new BigNumber(val.pay).shiftedBy(18);
+                    var minReturn = amountInTemp.minus(new BigNumber(this.sliptolfloat).times(amountInTemp)).toFixed();
+                    var amountIn = amountInTemp.toFixed();
+                    console.log(amountIn);
+                    console.log(minReturn);
+                    var TABI = window['ABI_' + val.fromCoin];
+                    if (val.pay == 0) alert("Pay is 0,Please input pay number.")
+                    else {
+                        Swap_Main = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
+                        Contract_Tokens = new this.web3.eth.Contract(TABI, Address_Tokens.get(val.fromCoin));
+                        Contract_Tokens.methods.approve(Address_MainContract, amountIn).send({
+                            from: ethereum.selectedAddress
+                        });
+                        Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), minReturn.toString(), this.distribution, this.flag).send({
+                            from: ethereum.selectedAddress
+                        }).then(
+                            res => {
+                                alert("will open a new window");
+                                window.open("https://testnet.bscscan.com/tx/" + res.transactionHash)
+
+                            }
+                        );
+
+                    }
+                },
+            },
+            mounted: function() {
                 if (window.ethereum) {
                     this.web3 = new Web3(window.ethereum)
                 } else {
