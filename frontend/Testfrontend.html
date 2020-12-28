@@ -80,7 +80,7 @@
                     </el-row>
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" @click="connectWallet" v-if="web3 == null">Connect to Wallet</el-button>
+                    <el-button type="primary" @click="connectWallet" v-if="!connected">Connect to Wallet</el-button>
                     <el-button type="primary" @click="swapT" v-else>Swap</el-button>
                   </el-form-item>
                 </el-form>
@@ -114,6 +114,7 @@
     var app = new Vue({
       el: '#app',
       data: {
+        connected: false,
         web3: null,
         distribution:null,	
         flag: null,
@@ -245,10 +246,11 @@
         connectWallet: function () {
           console.log('to wallet!')
           if (window.ethereum) {
-            this.web3 = new Web3(window.ethereum)
+            // this.web3 = new Web3(window.ethereum)
             window.ethereum
               .request({ method: 'eth_requestAccounts' })
-              .then(() => { 
+              .then(() => {
+                this.connected = true;
                 alert('Wallet Connect successlly')
               })
           } else {
@@ -274,6 +276,13 @@
           
           }
         },
+      },
+      mounted: function () {
+          if (window.ethereum) {
+            this.web3 = new Web3(window.ethereum)
+          } else {
+            alert('Wallet is not available!')
+          }
       },
       watch:{
         formData:{
