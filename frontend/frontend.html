@@ -34,8 +34,9 @@
                                 <el-table-column prop="diff" label="Diff"></el-table-column>
                                 <el-table-column label="Switch">
                                     <template slot-scope="scope">
-                    <el-switch v-model="scope.row.selected" @input="dexSwitched(scope.row)"></el-switch>
-                  </template>
+                                        <el-switch v-model="scope.row.selected" @input="dexSwitched(scope.row)">
+                                        </el-switch>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                         </el-col>
