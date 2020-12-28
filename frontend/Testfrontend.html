@@ -60,13 +60,13 @@
                       </el-col>
                     </el-row>
                   </el-form-item>
-				  <el-form-item label="Part">
-				  	<el-row :gutter="10">
+                  <el-form-item label="Part">
+                    <el-row :gutter="10">
                       <el-col :span="16">
                         <el-input-number v-model="formData.part"  :controls="false"></el-input>
                       </el-col>
                     </el-row>
-				  </el-form-item>
+                  </el-form-item>
                   <el-form-item label="Receive">
                     <el-row :gutter="10">
                       <el-col :span="16">
@@ -93,13 +93,13 @@
     </el-container>
   </div>
   <script>
-	
-	var FlagMap = new Map();
-	FlagMap.set("burgerSwap",0x01+0x02+0x04);FlagMap.set("bakerySwap",0x08+0x10);FlagMap.set("cheeseSwap",0x20+0x40);
-	FlagMap.set("bscSwap",0x80+0x100);FlagMap.set("pancakeswap",0x200+0x400);
-	var disable_all = 0x01+0x02+0x04+0x08+0x10+0x20+0x40+0x80+0x100+0x200+0x400;
-	
-	
+  
+  var FlagMap = new Map();
+  FlagMap.set("burgerSwap",0x01+0x02+0x04);FlagMap.set("bakerySwap",0x08+0x10);FlagMap.set("cheeseSwap",0x20+0x40);
+  FlagMap.set("bscSwap",0x80+0x100);FlagMap.set("pancakeswap",0x200+0x400);
+  var disable_all = 0x01+0x02+0x04+0x08+0x10+0x20+0x40+0x80+0x100+0x200+0x400;
+  
+  
   </script>
   
   <script>
@@ -115,25 +115,25 @@
       el: '#app',
       data: {
         web3: null,
-		distribution:null,	
-		flag: null,
+        distribution:null,	
+        flag: null,
         formData: {
           pay: 0,
-		  part: 10,
+          part: 10,
           receive: '',
           fromCoin: 'BUSD',
           toCoin: 'WBNB'
         },
-		coinList1: [
+        coinList1: [
           { label: "WBNB", value: "WBNB" },
-		  { label: "BUSD", value: "BUSD" },
+          { label: "BUSD", value: "BUSD" },
         ],
         coinList2: [
           { label: "WBNB", value: "WBNB" },
           { label: "BSWAP", value: "BSWAP" },
-		  { label: "BUSD", value: "BUSD" },
-		  { label: "BTCB", value: "BTCB" },
-		  { label: "ETH", value: "ETH" }
+          { label: "BUSD", value: "BUSD" },
+          { label: "BTCB", value: "BTCB" },
+          { label: "ETH", value: "ETH" }
         ],
         tableData: [
           {
@@ -143,28 +143,28 @@
             diff: 1.0,
             selected: false
           },
-		  {
+          {
             name: 'bakerySwap',
             amount: "No available",
             
             diff: 1.0,
             selected: true
           },
-		  {
+          {
             name: 'bscSwap',
             amount: "No available",
        
             diff: 1.0,
             selected: true
           },
-		  {
+          {
             name: 'cheeseSwap',
             amount: "No available",
           
             diff: 1.0,
             selected: false
           },
-		  {
+          {
             name: 'pancakeswap',
             amount: "No available",
            
@@ -183,109 +183,108 @@
         }
       },
       methods: {
-		QueryAll: function(){
-			var t = this.tableData;
-			var val = this.formData;
-			var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
-			Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-			//<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[0].name)).call().then(res => { -->
-			//				<!-- t[0].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
-			//		<!-- }) -->
-			Contract_Query.methods.getExpectedReturn(
-				Address_Tokens.get(val.fromCoin),
-				Address_Tokens.get(val.toCoin),
-				amountIn.toString(),
-				1,
-				disable_all-FlagMap.get(t[1].name)).call()
-			.then(res => {
-				t[1].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-			})
-			Contract_Query.methods.getExpectedReturn(
-				Address_Tokens.get(val.fromCoin),
-				Address_Tokens.get(val.toCoin),
-				amountIn.toString(),
-				1,
-				disable_all-FlagMap.get(t[2].name)).call()
-			.then(res => {		
-				t[2].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-			})
-			//<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[3].name)).call().then(res => {		      -->
-			//					<!-- t[3].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
-			//		<!-- }) -->
-			//<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[4].name)).call().then(res => { -->
-			//					<!-- t[4].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
-			//		<!-- }) -->
-		},
-		QueryBest: function(){
-			this.flag = disable_all;
-			var val = this.formData;
-			var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
-			Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-			
-			for(var num = 0;num<5;num++)	if(this.tableData[num].selected == true )	this.flag = this.flag - FlagMap.get(this.tableData[num].name);
-			Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),val.part,this.flag).call().then(res => {
-								this.distribution = res[1];
-								val.receive =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-								this.chartdata.datasets[0].data[0] = Number(this.distribution[1])+Number(this.distribution[2])+Number(this.distribution[3]);
-								this.chartdata.datasets[0].data[1] = Number(this.distribution[4])+Number(this.distribution[5]);
-								this.chartdata.datasets[0].data[2] = Number(this.distribution[6])+Number(this.distribution[7]);
-								this.chartdata.datasets[0].data[3] = Number(this.distribution[8])+Number(this.distribution[9]);
-								this.chartdata.datasets[0].data[4] = Number(this.distribution[10])+Number(this.distribution[11]);
-								
-				}
-			)
-		},
+        QueryAll: function(){
+          var t = this.tableData;
+          var val = this.formData;
+          var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+          Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
+          //<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[0].name)).call().then(res => { -->
+          //				<!-- t[0].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
+          //		<!-- }) -->
+          Contract_Query.methods.getExpectedReturn(
+            Address_Tokens.get(val.fromCoin),
+            Address_Tokens.get(val.toCoin),
+            amountIn.toString(),
+            1,
+            disable_all-FlagMap.get(t[1].name)).call()
+          .then(res => {
+            t[1].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+          })
+          Contract_Query.methods.getExpectedReturn(
+            Address_Tokens.get(val.fromCoin),
+            Address_Tokens.get(val.toCoin),
+            amountIn.toString(),
+            1,
+            disable_all-FlagMap.get(t[2].name)).call()
+          .then(res => {		
+            t[2].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+          })
+          //<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[3].name)).call().then(res => {		      -->
+          //					<!-- t[3].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
+          //		<!-- }) -->
+          //<!-- Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),1,disable_all-FlagMap.get(t[4].name)).call().then(res => { -->
+          //					<!-- t[4].amount =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString(); -->
+          //		<!-- }) -->
+        },
+        QueryBest: function(){
+          this.flag = disable_all;
+          var val = this.formData;
+          var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+          Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
+          
+          for(var num = 0;num<5;num++)	if(this.tableData[num].selected == true )	this.flag = this.flag - FlagMap.get(this.tableData[num].name);
+          Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),val.part,this.flag).call().then(res => {
+                    this.distribution = res[1];
+                    val.receive =  new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+                    this.chartdata.datasets[0].data[0] = Number(this.distribution[1])+Number(this.distribution[2])+Number(this.distribution[3]);
+                    this.chartdata.datasets[0].data[1] = Number(this.distribution[4])+Number(this.distribution[5]);
+                    this.chartdata.datasets[0].data[2] = Number(this.distribution[6])+Number(this.distribution[7]);
+                    this.chartdata.datasets[0].data[3] = Number(this.distribution[8])+Number(this.distribution[9]);
+                    this.chartdata.datasets[0].data[4] = Number(this.distribution[10])+Number(this.distribution[11]);
+                    
+            }
+          )
+        },
         dexSwitched: function (row) {
-			this.QueryBest();
+          this.QueryBest();
         },
         formDataChange: function () {
-			this.QueryAll();
-			this.QueryBest();
+          this.QueryAll();
+          this.QueryBest();
         },
         connectWallet: function () {
           console.log('to wallet!')
           if (window.ethereum) {
-		  
-            w3 = new Web3(window.ethereum)
+            this.web3 = new Web3(window.ethereum)
             window.ethereum
               .request({ method: 'eth_requestAccounts' })
-              .then(() => { this.web3 = w3 }
-			  )
-			  alert('Wallet Connect successlly')
+              .then(() => { 
+                alert('Wallet Connect successlly')
+              })
           } else {
             alert('Wallet is not available!')
           }
         },
-		swapT: function(){
-			var val = this.formData;
-			var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
-			var TABI = window['ABI_'+val.fromCoin];
-			if(val.pay == 0)	alert("Pay is 0,Please input pay number.")
-			else {
-			Swap_Main = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-			Contract_Tokens = new this.web3.eth.Contract(TABI, Address_Tokens.get(val.fromCoin));
-			Contract_Tokens.methods.approve(Address_MainContract,amountIn).send({from:ethereum.selectedAddress});
-			Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),0,this.distribution,this.flag).send({from:ethereum.selectedAddress}).then(
-				res =>{
-					alert("will open a new window");
-					window.open("https://testnet.bscscan.com/tx/"+res.transactionHash)
-					
-				}
-			);
-			
-			}
-		},
+        swapT: function(){
+          var val = this.formData;
+          var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+          var TABI = window['ABI_'+val.fromCoin];
+          if(val.pay == 0)	alert("Pay is 0,Please input pay number.")
+          else {
+            Swap_Main = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
+            Contract_Tokens = new this.web3.eth.Contract(TABI, Address_Tokens.get(val.fromCoin));
+            Contract_Tokens.methods.approve(Address_MainContract,amountIn).send({from:ethereum.selectedAddress});
+            Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin),Address_Tokens.get(val.toCoin),amountIn.toString(),0,this.distribution,this.flag).send({from:ethereum.selectedAddress}).then(
+            res =>{
+              alert("will open a new window");
+              window.open("https://testnet.bscscan.com/tx/"+res.transactionHash)
+              
+            }
+          );
+          
+          }
+        },
       },
-	  watch:{
-		formData:{
-			handler(){
-				this.formDataChange();
-			},
-			deep: true,
-			immediate: false
-		}
-		
-	  }
+      watch:{
+        formData:{
+          handler(){
+            this.formDataChange();
+          },
+          deep: true,
+          immediate: false
+        }
+    
+      }
     })
   </script>
   
