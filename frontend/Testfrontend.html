@@ -30,8 +30,7 @@
               <el-table :data="tableData" style="width: 100%">
                 <el-table-column prop="name" label="Name"></el-table-column>
                 <el-table-column prop="amount" label="Amount"></el-table-column>
-
-                <el-table-column prop="diff" label="Diff"></el-table-column>
+                <!-- <el-table-column prop="diff" label="Diff"></el-table-column> -->
                 <el-table-column label="Switch">
                   <template slot-scope="scope">
                     <el-switch v-model="scope.row.selected" @input="dexSwitched(scope.row)">
@@ -136,6 +135,7 @@
           pay: 0,
           part: 10,
           receive: '',
+          receiveNum: 0,
           fromCoin: 'BUSD',
           toCoin: 'WBNB'
         },
@@ -204,122 +204,135 @@
         sliptolfloat: function() {
           let temp = this.sliptol
           return Number(temp.substr(0, temp.length - 1)) / 100
+        },
+        fromCoinAddr: function () {
+          return Address_Tokens.get(this.formData.fromCoin)
+        },
+        toCoinAddr: function () {
+          return Address_Tokens.get(this.formData.toCoin)
         }
       },
       methods: {
+        oneDexMask: function (row) {
+          return disable_all - FlagMap.get(row.name)
+        },
         QueryAll: function() {
           var t = this.tableData;
           var val = this.formData;
-          var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+          var amountIn = new BigNumber(val.pay).shiftedBy(18).integerValue()
           Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-          // Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[0].name)).call().then(res => {
-          //   t[0].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-          // })
+          // Contract_Query.methods.getExpectedReturn(
+          //     this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), 1, this.oneDexMask(t[0])
+          //   ).call().then(res => {
+          //     t[0].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2);
+          //   })
           Contract_Query.methods.getExpectedReturn(
-              Address_Tokens.get(val.fromCoin),
-              Address_Tokens.get(val.toCoin),
-              amountIn.toString(),
-              1,
-              disable_all - FlagMap.get(t[1].name)).call()
-            .then(res => {
-              t[1].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+              this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), 1, this.oneDexMask(t[1])
+            ).call().then(res => {
+              t[1].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2);
             })
           Contract_Query.methods.getExpectedReturn(
-              Address_Tokens.get(val.fromCoin),
-              Address_Tokens.get(val.toCoin),
-              amountIn.toString(),
-              1,
-              disable_all - FlagMap.get(t[2].name)).call()
-            .then(res => {
-              t[2].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+              this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), 1, this.oneDexMask(t[2])
+            ).call().then(res => {
+              t[2].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2);
             })
-          // Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[3].name)).call().then(res => {
-          //   t[3].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-          // })
-          // Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), 1, disable_all - FlagMap.get(t[4].name)).call().then(res => {
-          //   t[4].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-          // })
+          // Contract_Query.methods.getExpectedReturn(
+          //     this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), 1, this.oneDexMask(t[3])
+          //   ).call().then(res => {
+          //     t[3].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2);
+          //   })
+          // Contract_Query.methods.getExpectedReturn(
+          //     this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), 1, this.oneDexMask(t[4])
+          //   ).call().then(res => {
+          //     t[4].amount = new BigNumber(res[0]).shiftedBy(-18).toFixed(2);
+          //   })
         },
         QueryBest: function() {
           this.flag = disable_all;
           var val = this.formData;
-          var amountIn = new BigNumber(val.pay).shiftedBy(18).toFixed()
+          var amountIn = new BigNumber(val.pay).shiftedBy(18).integerValue()
           Contract_Query = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
 
           for (var num = 0; num < 5; num++)
-            if (this.tableData[num].selected == true) this.flag = this.flag - FlagMap.get(this.tableData[num].name);
-          Contract_Query.methods.getExpectedReturn(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), val.part, this.flag).call().then(res => {
-            this.distribution = res[1];
-            val.receive = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
-          })
+            if (this.tableData[num].selected == true)
+              this.flag = this.flag - FlagMap.get(this.tableData[num].name);
+          Contract_Query.methods.getExpectedReturn(
+              this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), val.part, this.flag
+            ).call().then(res => {
+              this.distribution = res[1];
+              val.receive = new BigNumber(res[0]).shiftedBy(-18).toFixed(2).toString();
+              val.receiveNum = new BigNumber(res[0])
+            })
 
-          Contract_Query.methods.getCurve(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), val.part, this.flag).call().then(res => {
-            var burgerArray = new Array();
-            var bakeryArray = new Array();
-            var bscArray = new Array();
-            var cheeseArray = new Array();
-            var pancakeArray = new Array();
-            var divArray = new Array();
+          Contract_Query.methods.getCurve(
+              this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), val.part, this.flag
+            ).call().then(res => {
+              var burgerArray = new Array();
+              var bakeryArray = new Array();
+              var bscArray = new Array();
+              var cheeseArray = new Array();
+              var pancakeArray = new Array();
+              var divArray = new Array();
 
-            let res2 = []
-            for (let pos = 0; pos < res.length; pos += val.part) {
-              for (let it = 1; it <= val.part; it++) {
-                let temp = res[it + pos - 1] / (it / val.part * val.pay)
-                res2.push(temp)
+              let res2 = []
+              for (let pos = 0; pos < res.length; pos += val.part) {
+                for (let it = 1; it <= val.part; it++) {
+                  let temp = res[it + pos - 1] / (it / val.part * val.pay)
+                  res2.push(temp)
+                }
               }
-            }
-            res = res2
+              res = res2
 
-            if (val.part > 10) {
-              var div = val.part / 10;
-              for (var i = 1; i <= 10; i++) divArray.push(Math.ceil(i * div) - 1);
-            } else
-              for (var i = 0; i < val.part; i++) divArray.push(i);
+              if (val.part > 10) {
+                var div = val.part / 10;
+                for (var i = 1; i <= 10; i++) divArray.push(Math.ceil(i * div) - 1);
+              } else
+                for (var i = 0; i < val.part; i++) divArray.push(i);
 
-            // for (var i = 0; i < 10; i++) {
-            //   burgerArray.push(Math.max(res[val.part + divArray[i]], res[2 * val.part + divArray[i]], res[3 * div.part + divArray[i]]))
-            // }
-            for (var i = 0; i < 10; i++) {
-              bakeryArray.push(new BigNumber(Math.max(res[val.part * 4 + divArray[i]], res[5 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
-            }
-            for (var i = 0; i < 10; i++) {
-              bscArray.push(new BigNumber(Math.max(res[val.part * 6 + divArray[i]], res[7 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
-            }
-            // for (var i = 0; i < 10; i++) {
-            //   cheeseArray.push(Math.max(res[val.part * 8 + divArray[i]], res[9 * val.part + divArray[i]]))
-            // }
-            // for (var i = 0; i < 10; i++) {
-            //   pancakeArray.push(Math.max(res[val.part * 10 + divArray[i]], res[11 * val.part + divArray[i]]))
-            // }
-            for (let i = 0; i < divArray.length; i++) {
-              divArray[i] = (divArray[i] + 1) / val.part * val.pay
-            }
-            this.chartdata = {
-              labels: divArray,
-              datasets: [
-                // {
-                //   label: 'burgerSwap',
-                //   data: burgerArray
-                // }, 
-                {
-                  label: 'bakerySwap',
-                  data: bakeryArray
-                },
-                {
-                  label: 'bscSwap',
-                  data: bscArray
-                },
-                // {
-                //   label: 'cheeseSwap',
-                //   data: cheeseArray
-                // },
-                // {
-                //   label: 'pancakeswap',
-                //   data: pancakeArray
-                // }
-              ]
-            }
-          })
+              // for (var i = 0; i < 10; i++) {
+              //   burgerArray.push(Math.max(res[val.part + divArray[i]], res[2 * val.part + divArray[i]], res[3 * div.part + divArray[i]]))
+              // }
+              for (var i = 0; i < 10; i++) {
+                bakeryArray.push(new BigNumber(Math.max(res[val.part * 4 + divArray[i]], res[5 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
+              }
+              for (var i = 0; i < 10; i++) {
+                bscArray.push(new BigNumber(Math.max(res[val.part * 6 + divArray[i]], res[7 * val.part + divArray[i]])).shiftedBy(-18).toFixed(2))
+              }
+              // for (var i = 0; i < 10; i++) {
+              //   cheeseArray.push(Math.max(res[val.part * 8 + divArray[i]], res[9 * val.part + divArray[i]]))
+              // }
+              // for (var i = 0; i < 10; i++) {
+              //   pancakeArray.push(Math.max(res[val.part * 10 + divArray[i]], res[11 * val.part + divArray[i]]))
+              // }
+              for (let i = 0; i < divArray.length; i++) {
+                divArray[i] = (divArray[i] + 1) / val.part * val.pay
+              }
+              this.chartdata = {
+                labels: divArray,
+                datasets: [
+                  // {
+                  //   label: 'burgerSwap',
+                  //   data: burgerArray
+                  // }, 
+                  {
+                    label: 'bakerySwap',
+                    data: bakeryArray
+                  },
+                  {
+                    label: 'bscSwap',
+                    data: bscArray
+                  },
+                  // {
+                  //   label: 'cheeseSwap',
+                  //   data: cheeseArray
+                  // },
+                  // {
+                  //   label: 'pancakeswap',
+                  //   data: pancakeArray
+                  // }
+                ]
+              }
+            })
         },
         dexSwitched: function(row) {
           this.QueryBest();
@@ -346,29 +359,21 @@
         },
         swapT: function() {
           var val = this.formData;
-          var amountInTemp = new BigNumber(val.pay).shiftedBy(18);
-          var minReturn = amountInTemp.minus(new BigNumber(this.sliptolfloat).times(amountInTemp)).toFixed();
-          var amountIn = amountInTemp.toFixed();
-          console.log(amountIn);
-          console.log(minReturn);
+          var minReturn = val.receiveNum.minus(new BigNumber(this.sliptolfloat).times(val.receiveNum)).integerValue();
+          var amountIn = new BigNumber(val.pay).shiftedBy(18).integerValue();
           var TABI = window['ABI_' + val.fromCoin];
           if (val.pay == 0) alert("Pay is 0,Please input pay number.")
           else {
             Swap_Main = new this.web3.eth.Contract(ABI_MainContract, Address_MainContract);
-            Contract_Tokens = new this.web3.eth.Contract(TABI, Address_Tokens.get(val.fromCoin));
-            Contract_Tokens.methods.approve(Address_MainContract, amountIn).send({
-              from: ethereum.selectedAddress
-            });
-            Swap_Main.methods.swap(Address_Tokens.get(val.fromCoin), Address_Tokens.get(val.toCoin), amountIn.toString(), minReturn.toString(), this.distribution, this.flag).send({
-              from: ethereum.selectedAddress
-            }).then(
-              res => {
-                alert("will open a new window");
-                window.open("https://testnet.bscscan.com/tx/" + res.transactionHash)
-
-              }
-            );
-
+            Contract_Tokens = new this.web3.eth.Contract(TABI, this.fromCoinAddr);
+            Contract_Tokens.methods.approve(Address_MainContract, amountIn.toString())
+              .send({ from: ethereum.selectedAddress });
+            Swap_Main.methods.swap(
+                this.fromCoinAddr, this.toCoinAddr, amountIn.toString(), minReturn.toString(), this.distribution, this.flag
+              ).send({ from: ethereum.selectedAddress }).then(res => {
+                  alert("will open a new window");
+                  window.open("https://testnet.bscscan.com/tx/" + res.transactionHash)
+              })
           }
         },
       },
